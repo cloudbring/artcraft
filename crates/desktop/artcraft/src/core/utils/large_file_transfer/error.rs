@@ -5,6 +5,7 @@ use std::fmt::Display;
 
 #[derive(Debug)]
 pub enum Error {
+  RangeIgnored,
   Io(std::io::Error),
   Request(reqwest::Error),
   ToStrError(ToStrError),
@@ -32,6 +33,7 @@ impl From<ToStrError> for Error {
 impl Display for Error {
   fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
     match self {
+      Self::RangeIgnored => write!(f, "Server ignored the requested byte range"),
       Self::Io(io) => write!(f, "Io: {io}"),
       Self::Request(req) => write!(f, "Request: {req}"),
       Self::ToStrError(req) => write!(f, "Response non ascii: {req}"),
